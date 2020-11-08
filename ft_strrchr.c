@@ -14,24 +14,14 @@
 
 char*ft_strrchr(const char *str, int c)
 {
-	int i;
+	int len;
 
-	i = 0;
-	while (str[i] != '\0')
-		i++;
-	while (i > 0)
+	len = ft_strlen(str);
+	while (str[len - 1] != 0)
 	{
-		if (str[i] == c)
-			return ((char*)&str[i]);
-		i--;
+		if (str[len] == c)
+			return (&((char*)str)[len]);
+		len--;
 	}
 	return (NULL);
-}
-
-int	main(void)
-{
-	char *str = "strinrg";
-	printf("\nTest de ft_strrchr :\n");
-	printf("%p : %p\n", strrchr(str, '\0'), ft_strrchr(str, '\1'));
-	printf("%p : %p\n", strrchr(str, 'r'), ft_strrchr(str, 'r'));
 }

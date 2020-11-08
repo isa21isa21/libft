@@ -20,14 +20,3 @@ t_list  *ft_lstlast(t_list *lst)
         lst = lst->next;
     return (lst);
 }
-
-int main(void)
-{
-    t_list	*begin;
-    printf("\nTest de ft_lstlast :\n");
-	if (*((int*)(ft_lstlast(begin)->content)) == 0)
-		printf("OK\n");
-	else
-		printf("Failed.\n");
-
-}
