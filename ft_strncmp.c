@@ -6,18 +6,11 @@
 /*   By: cquickbe <cquickbe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:26:41 by cquickbe          #+#    #+#             */
-/*   Updated: 2020/11/04 20:04:49 by cquickbe         ###   ########.fr       */
+/*   Updated: 2020/11/08 19:04:25 by cquickbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-int	ft_isascii(int c)
-{
-	if (c >= 0 && c <= 127)
-		return (1);
-	return (0);
-}
 
 int		ft_strncmp(const char *str1, const char *str2, size_t n)
 {

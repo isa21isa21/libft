@@ -1,67 +1,89 @@
-#include <stdio.h>
-#include <stdlib.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cquickbe <cquickbe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/04 17:12:21 by cquickbe          #+#    #+#             */
+/*   Updated: 2020/11/11 17:28:16 by cquickbe         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int strnum(char const *s, char c)
+#include "libft.h"
+
+static int	strnum(char const *s, char c)
 {
-    int flag;
-    int cnum;
-    int i;
+	int cnum;
+	int i;
 
-    i = 0;
-    cnum = 0;
-    while (s[i] != 0)
-    {
-        if (s[i] != c)
-        {
-            cnum++;
-            while (s[i] != c)
-                i++;
-        }
-        i++;
-    }
-    return (cnum);
+	i = 0;
+	cnum = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] != c)
+		{
+			cnum++;
+			while (s[i] != c && s[i] != '\0')
+				i++;
+		}
+		if (s[i] == '\0')
+			break ;
+		i++;
+	}
+	return (cnum);
 }
 
-void    memfree(char **str, int wordnum)
+static void	memclear(char **str)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while (i < wordnum)
-    {
-        free(*(str + i));
-        i++;
-    }
-    free(str);
+	i = 0;
+	while (str[i])
+	{
+		free(str[i]);
+	}
+	free(str);
 }
 
-void    strcopy(char **str, char const *s, char c, int wordnum)
+static char	**madecopy(char **str, char const *s, char c, int cnum)
 {
-    int i;
-    int size;
+	int i;
+	int j;
+	int size;
 
-    i = 0;
-
+	i = 0;
+	j = 0;
+	while (j < cnum)
+	{
+		size = 0;
+		while (*(s + i) == c)
+			i++;
+		while (*(s + i + size) != c && *(s + i + size))
+			size++;
+		str[j] = ft_substr(s, i, size);
+		if (!str[j])
+		{
+			memclear(str);
+			return (NULL);
+		}
+		i += size;
+		j++;
+	}
+	return (str);
 }
 
-char **ft_split(char const *s, char c)
+char		**ft_split(char const *s, char c)
 {
-    char    **str;
-    int     i;
-    int     wordnum;
-    
-    i = 0;
-    wordnum = strnum(s, c);
-    if(!(str = (char**)malloc(sizeof(char*) * (wordnum + 1))))  //" Hello***world***how  * are"
-        return (NULL);
-    if (!str)
-        return (NULL);
-    
-    return (str);
-}
+	char	**str;
+	int		cnum;
 
-int     main(void)
-{
-   	printf("%d", ft_split("Hello***world***how  * are", 'c'));
-    return (0);
+	if (!s)
+		return (NULL);
+	cnum = strnum(s, c);
+	if (!(str = (char**)malloc(sizeof(char*) * (cnum + 1))))
+		return (NULL);
+	*(str + cnum) = 0;
+	madecopy(str, s, c, cnum);
+	return (str);
 }

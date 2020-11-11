@@ -6,29 +6,32 @@
 /*   By: cquickbe <cquickbe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:26:45 by cquickbe          #+#    #+#             */
-/*   Updated: 2020/11/04 19:41:51 by cquickbe         ###   ########.fr       */
+/*   Updated: 2020/11/09 20:48:55 by cquickbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *strB, const char *strA, size_t len)
+char	*ft_strnstr(const char *str, const char *find, size_t len)
 {
-	int i;
-	int a;
-	int b;
+	size_t i;
+	size_t j;
 
 	i = 0;
-	b = 0;
-	if (strA == 0)
-		return ((char*)strB);
-	while (strA[i] != '\0' && i < len)
+	j = 0;
+	if (str[i] == '\0' && find[i] == '\0')
+		return ((char *)&str[0]);
+	while (str[i] && i <= len)
 	{
-		while (strA[i] != (*strB + b))
-			b++; 
-		
-		if (strB + b == '\0')
-			return (&((char*)strB)[i]);
+		while (str[i + j] == find[j] && find[j] && (i + j) < len)
+			j++;
+		if (find[j] == '\0')
+			return ((char *)&str[i]);
+		else
+		{
+			i++;
+			j = 0;
+		}
 	}
 	return (NULL);
 }

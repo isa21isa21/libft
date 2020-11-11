@@ -6,13 +6,13 @@
 /*   By: cquickbe <cquickbe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:26:25 by cquickbe          #+#    #+#             */
-/*   Updated: 2020/11/04 18:36:00 by cquickbe         ###   ########.fr       */
+/*   Updated: 2020/11/09 19:28:21 by cquickbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char*ft_strdup(const char *src)
+char	*ft_strdup(const char *src)
 {
 	char *dst;
 

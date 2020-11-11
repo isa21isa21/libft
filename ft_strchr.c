@@ -6,13 +6,13 @@
 /*   By: cquickbe <cquickbe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:26:22 by cquickbe          #+#    #+#             */
-/*   Updated: 2020/11/04 18:35:48 by cquickbe         ###   ########.fr       */
+/*   Updated: 2020/11/09 19:28:13 by cquickbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char*ft_strchr(const char *str, int c)
+char	*ft_strchr(const char *str, int c)
 {
 	int i;
 

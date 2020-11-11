@@ -6,79 +6,66 @@
 /*   By: cquickbe <cquickbe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 15:54:42 by cquickbe          #+#    #+#             */
-/*   Updated: 2020/11/04 20:11:59 by cquickbe         ###   ########.fr       */
+/*   Updated: 2020/11/10 17:19:22 by cquickbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t ft_strlen(const char *str)
+int		my_start(char const *s1, char const *set)
 {
-    size_t i;
-    i = 0;
-    while (str[i] != '\0')
-        i++;
-    return(i);
-}
-
-char*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	int		i;
-	char	*str;
+	int i;
+	int counter;
 
 	i = 0;
-	if (!(str = (char*)malloc(sizeof(char) * (len + 1))))
-		return (NULL);
-	while (len-- && s[start] != '\0')
+	counter = 0;
+	while (s1[i])
 	{
-		str[i] = s[start];
+		if (ft_strchr(set, s1[i]) != NULL)
+			counter++;
+		else
+			break ;
 		i++;
-		start++;
 	}
-	return (str);
+	return (counter);
 }
 
-int my_end(char const *s1, char const *set)
+int		my_end(char const *s1, char const *set)
 {
-    int endlen;
-    int schetchik;
+	int counter;
+	int len;
 
-    schetchik = 0;
-    endlen = ft_strlen(s1);
-    while (s1[endlen] == (char)set)
-    {
-        endlen--;
-        schetchik++;
-    }
-    return (endlen - schetchik);
+	counter = 0;
+	len = ft_strlen(s1);
+	len--;
+	while (s1[len])
+	{
+		if (ft_strchr(set, s1[len]) != NULL)
+			counter++;
+		else
+			break ;
+		len--;
+	}
+	return (counter);
 }
 
-char *ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set)
 {
-    int start;
-    int len;
-    int set_i;
-    
-    start = 0;
-    set_i = 0;
-    if (!s1 || !set)
-        return (NULL);
-    while (s1[start] == (char)set)
-        start++;
-    return (ft_substr(s1, start, (my_end(s1, set) - start)));
-}
+	char	*s;
+	int		len;
+	int		start;
+	int		end;
 
-int     main(void)
-{
-    printf("\nTest de ft_strtrim :\n");
-	printf("'bonjour' : %s\n", ft_strtrim("bonjour", " "));
-	printf("'bonjour' : '%s'\n", ft_strtrim(" bonjour ", " "));
-	printf("'onjour' : '%s'\n", ft_strtrim(" bonjour ", " b"));
-	printf("'bonjour' : '%s'\n", ft_strtrim(" bonjour", " "));
-	printf("'bonjour' : '%s'\n", ft_strtrim("bonjour ", " "));
-	printf("'onjou' : '%s'\n", ft_strtrim("bonjour ", "br "));
-	printf("'' : '%s'\n", ft_strtrim("", " "));
-	printf("'test' : '%s'\n", ft_strtrim("test", ""));
-	printf("'te st' : '%s'\n", ft_strtrim(" te st ", " "));
-	printf("'' : '%s'\n", ft_strtrim(" b  ", "b "));
+	if (!s1 || !set)
+		return (NULL);
+	len = ft_strlen(s1);
+	start = my_start(s1, set);
+	end = my_end(s1, set);
+	if (start == len)
+	{
+		s = malloc(sizeof(char));
+		s[0] = '\0';
+		return (s);
+	}
+	return (ft_substr(s1, start, len - start - end));
 }

@@ -1,33 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cquickbe <cquickbe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/29 18:26:34 by cquickbe          #+#    #+#             */
-/*   Updated: 2020/11/09 19:41:44 by cquickbe         ###   ########.fr       */
+/*   Created: 2020/11/10 15:56:33 by cquickbe          #+#    #+#             */
+/*   Updated: 2020/11/10 17:16:45 by cquickbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcpy(char *dst, char *src, size_t size)
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void*))
 {
-	size_t j;
-	size_t i;
+	t_list *lstnew;
+	t_list *lstsave;
 
-	i = 0;
-	j = 0;
-	while (src[i] != '\0')
-		i++;
-	if (!src || !dst || size == 0)
-		return (i);
-	while (src[j] != '\0' && j < (size - 1))
+	if (!lst || !f)
+		return (NULL);
+	lstnew = ft_lstnew(f(lst->content));
+	if (!lstnew)
+		return (NULL);
+	lstsave = lstnew;
+	while (lst->next)
 	{
-		dst[j] = src[j];
-		j++;
+		lst = lst->next;
+		lstnew->next = ft_lstnew(f(lst->content));
+		if (!lstnew->next)
+		{
+			ft_lstclear(&lstsave, del);
+			return (NULL);
+		}
+		lstnew = lstnew->next;
 	}
-	dst[j] = '\0';
-	return (i);
+	return (lstsave);
 }

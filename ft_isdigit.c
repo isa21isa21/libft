@@ -6,15 +6,15 @@
 /*   By: cquickbe <cquickbe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:25:58 by cquickbe          #+#    #+#             */
-/*   Updated: 2020/11/04 17:58:18 by cquickbe         ###   ########.fr       */
+/*   Updated: 2020/11/09 16:46:33 by cquickbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isdigit(char s)
+int	ft_isdigit(int c)
 {
-	if (s >= '0' && s <= '9')
+	if (c >= '0' && c <= '9')
 		return (1);
 	return (0);
 }
