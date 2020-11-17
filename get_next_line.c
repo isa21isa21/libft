@@ -6,20 +6,24 @@
 /*   By: cquickbe <cquickbe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/11 19:06:41 by cquickbe          #+#    #+#             */
-/*   Updated: 2020/11/16 15:25:25 by cquickbe         ###   ########.fr       */
+/*   Updated: 2020/11/17 18:42:14 by cquickbe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
 
-void	ft_strclr(char *s)
+void		ft_strclr(char *s)
 {
 	if (s)
 		while (*s)
 			*s++ = '\0';
 }
 
-char *ft_strcpy(char *dst, char *src)
+char		*ft_strcpy(char *dst, char *src)
 {
 	int i;
 
@@ -63,7 +67,7 @@ size_t	ft_strlcpy(char *dst, char *src, size_t size)
 	return (i);
 }
 
-char	*ft_strdup(const char *src)
+char		*ft_strdup(const char *src)
 {
 	char *dst;
 
@@ -73,7 +77,7 @@ char	*ft_strdup(const char *src)
 	return (dst);
 }
 
-char	*ft_strchr(const char *str, int c)
+char		*ft_strchr(const char *str, int c)
 {
 	int i;
 
@@ -89,7 +93,7 @@ char	*ft_strchr(const char *str, int c)
 	return (NULL);
 }
 
-char	*ft_strnew(size_t size)
+char		*ft_strnew(size_t size)
 {
 	char	*str;
 
@@ -101,7 +105,7 @@ char	*ft_strnew(size_t size)
 	return (str);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char		*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*str;
 	int		i;
@@ -129,7 +133,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (str);
 }
 
-char *rem_variable(char **line, char *rem)
+char		*rem_variable(char **line, char *rem)
 {
 	char *newline_pointer;
 
@@ -138,12 +142,14 @@ char *rem_variable(char **line, char *rem)
 		if ((newline_pointer = ft_strchr(rem, '\n')))
 		{
 			*newline_pointer = '\0';
-			*line = ft_strdup(rem);
+			if (!(*line = ft_strdup(rem)))
+				return ("-1");
 			ft_strcpy(rem, ++newline_pointer);
 		}
 		else
 		{
-			*line = ft_strdup(rem);
+			if (!(*line = ft_strdup(rem)))
+				return ("-1");
 			ft_strclr(rem);
 		}
 	else
@@ -151,42 +157,44 @@ char *rem_variable(char **line, char *rem)
 	return (newline_pointer);
 }
 
-
-int get_next_line(int fd, char **line)
+int		get_next_line(int fd, char **line)
 {
-	char buf[BUFFER_SIZE];
-	char *newline_pointer;
-	char *prev_line;
-	static char *rem;
-	int	bytes_read;
+	char			buf[BUFFER_SIZE];
+	char			*newline_pointer;
+	char			*prev_line;
+	static char	*rem;
+	int			bytes_read;
 
 	if (BUFFER_SIZE <= 0)
 		return (-1);
 	if (!line || fd < 0)
 		return (-1);
 	newline_pointer = rem_variable(line, rem);
-	while (!newline_pointer && (bytes_read = read(fd, buf, BUFFER_SIZE)))//ext'\0'availab'\0'
+	while (!newline_pointer && (bytes_read = read(fd, buf, BUFFER_SIZE)))
 	{
-		buf[bytes_read] = 0;
+		buf[bytes_read] = '\0';
 		if ((newline_pointer = ft_strchr(buf, '\n')))
 		{
 			*newline_pointer = '\0';
-			rem = ft_strdup(++newline_pointer);
+			if (!(rem = ft_strdup(++newline_pointer)))
+				return (-1);
 		}
 		prev_line = *line;
-		*line = ft_strjoin(*line, buf);
+		if (!(*line = ft_strjoin(*line, buf)))
+			return (-1);
 		free(prev_line);
 	}
-	return (0);
+	return (newline_pointer ? 1 : 0);
 }
 
 int main(void)
 {
-	char *line;
-	int	fd;
-	
+	int 	fd;
+	char 	*line;
+
 	fd = open("hello.txt", O_RDONLY);
-	get_next_line(fd, &line);
-	printf("%s\n", line);
-	return (0);
+	for(int i = 0; i < 7; i++)
+	{
+		printf("%d\n", get_next_line(fd, &line));
+	}
 }
